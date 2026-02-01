@@ -1,0 +1,28 @@
+# Sliding Window Maximum
+Solving problem 2:
+
+
+function maxOfSubarrays(arr, k) {
+    let n = arr.length;
+
+    // to store the results
+    let res = [];
+  
+    for (let i = 0; i <= n - k; i++) {
+      
+        let max = arr[i];
+        for (let j = 1; j < k; j++) {
+            if (arr[i + j] > max)
+                max = arr[i + j];
+        }
+        res.push(max);
+    }
+  
+    return res;
+}
+
+
+let arr = [ 1, 2, 3, 1, 4, 5, 2, 3, 6 ];
+let k = 3;
+let res = maxOfSubarrays(arr, k);
+console.log(res.join(" "));
