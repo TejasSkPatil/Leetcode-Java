@@ -1,0 +1,41 @@
+Activity Selection Problem
+
+Choose maximum non-overlapping activities.
+
+Steps:
+
+Sort activities by finish time
+
+Select first activity
+
+Select next activity whose start ≥ last finish
+
+Java Code
+import java.util.*;
+
+class Activity {
+    int start, end;
+
+    Activity(int s, int e){
+        start = s;
+        end = e;
+    }
+}
+
+class Solution {
+    public static int activitySelection(Activity arr[]){
+        Arrays.sort(arr, (a,b) -> a.end - b.end);
+
+        int count = 1;
+        int lastEnd = arr[0].end;
+
+        for(int i=1;i<arr.length;i++){
+            if(arr[i].start >= lastEnd){
+                count++;
+                lastEnd = arr[i].end;
+            }
+        }
+
+        return count;
+    }
+}
