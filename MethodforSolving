@@ -1,0 +1,61 @@
+ey everyone! 👋
+
+If you’re new to LeetCode and unsure where to begin, this guide is for you. Starting your journey in competitive programming can be overwhelming, but with the right approach, you can gradually improve your skills. Here’s how you can get started:
+
+Understand the Basics
+Before diving into problems, ensure you are comfortable with basic programming concepts like loops, conditionals, functions, arrays, and data types. If you're just starting out, consider following a basic programming course or tutorial.
+
+Choose a Programming Language
+Pick one programming language to focus on when you're starting. Some popular choices include Python, C++, Java, and JavaScript. Stick to one language until you're comfortable with problem-solving.
+
+Start with Easy Problems
+Begin with easy-level problems to build your confidence. Look for problems that have high acceptance rates as they are generally more straightforward. Some good categories to start with:
+
+Arrays
+Strings
+Hash Tables
+
+Follow a Pattern-Based Approach
+After solving a few easy problems, start focusing on common patterns (e.g., two pointers, sliding window, recursion, dynamic programming). Recognizing patterns will help you identify similar problems and solve them faster.
+
+Read the Problem Statement Carefully
+Make sure you understand what the problem is asking for. Pay attention to inputs, outputs, and constraints. This helps in avoiding mistakes and saves time.
+
+Plan Before Coding
+Don’t rush to write code immediately. Spend a few minutes analyzing the problem and come up with a plan. Writing down your logic will help you stay organized and reduce errors.
+
+Practice Consistently
+Aim to solve 1-2 problems daily. Consistent practice helps you build a habit and improve gradually. Track your progress and revisit problems you found difficult.
+
+Learn from Solutions
+If you get stuck, read the solution discussions. Sometimes, other users may have a more efficient or simpler approach. Understanding different approaches will expand your problem-solving skills.
+
+Understand Time and Space Complexity
+Learn the basics of Big O notation to understand how efficient your solutions are. Knowing how to analyze time and space complexity will help you write better, optimized code.
+
+Use LeetCode Resources
+Make the most of LeetCode’s features like the "Discuss" and "Explore" sections. The Explore section offers curated learning paths for various topics, while the Discuss section can give insights into different strategies from the community.
+
+Example Beginner Problems:
+Here are some beginner-friendly problems to get you started:
+
+Arrays:
+
+Two Sum
+Remove Duplicates from Sorted Array
+Rotate Array
+Strings:
+
+Valid Anagram
+Reverse String
+First Unique Character in a String
+Hash Tables:
+
+Contains Duplicate
+Intersection of Two Arrays
+Happy Number
+Final Tips:
+Be Patient: It’s okay to get stuck. Keep trying and learn from your mistakes.
+Ask for Help: Don’t hesitate to ask for hints or help. Learning from others can speed up your progress.
+Review and Reflect: After solving a problem, review your solution and think about how you could improve it.
+Hope this guide helps you start your journey on LeetCode! 😊 Happy coding, and good luck! 🚀
