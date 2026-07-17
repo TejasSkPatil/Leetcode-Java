@@ -1,0 +1,43 @@
+class Solution {
+    public int numDecodings(String s) {
+        // Base case: an empty string or a string with leading zero cannot be decoded
+        if (s == null || s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+
+        int n = s.length();
+        
+        // variables to store results of subproblems
+        // s1 represents dp[i-1] (initialized for string of length 1)
+        int s1 = 1; 
+        // s2 represents dp[i-2] (initialized for string of length 0)
+        int s2 = 1; 
+
+        for (int i = 1; i < n; i++) {
+            int current = 0;
+            char curChar = s.charAt(i);
+            char prevChar = s.charAt(i - 1);
+
+            // Check if single digit decoding is valid (1-9)
+            if (curChar != '0') {
+                current += s1;
+            }
+
+            // Check if two digit decoding is valid (10-26)
+            if (prevChar == '1' || (prevChar == '2' && curChar <= '6')) {
+                current += s2;
+            }
+
+            // Shift values for the next iteration
+            s2 = s1;
+            s1 = current;
+
+            // If both single and double digit pairings fail, it cannot be decoded
+            if (s1 == 0) {
+                return 0;
+            }
+        }
+
+        return s1;
+    }
+}
