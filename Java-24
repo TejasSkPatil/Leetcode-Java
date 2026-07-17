@@ -1,0 +1,34 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        // 1. Sort the array to place duplicates next to each other
+        Arrays.sort(nums);
+        // 2. Start the backtracking process from index 0
+        backtrack(result, new ArrayList<>(), nums, 0);
+        return result;
+    }
+
+    private void backtrack(List<List<Integer>> result, List<Integer> currentSubset, int[] nums, int start) {
+        // Add a copy of the current valid subset to the final result list
+        result.add(new ArrayList<>(currentSubset));
+
+        for (int i = start; i < nums.length; i++) {
+            // Skip the current element if it's identical to the previous element 
+            // AND it is not the initial element of this recursion level
+            if (i > start && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            // Include the element in the current subset
+            currentSubset.add(nums[i]);
+            // Move deeper into the recursion tree with the next index
+            backtrack(result, currentSubset, nums, i + 1);
+            // Remove the last added element to backtrack and try the next branch
+            currentSubset.remove(currentSubset.size() - 1);
+        }
+    }
+}
