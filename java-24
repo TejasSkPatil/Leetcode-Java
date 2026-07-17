@@ -1,0 +1,52 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    // Memoization table to store results for range [start][end]
+    private List<TreeNode>[][] memo;
+
+    public List<TreeNode> generateTrees(int n) {
+        if (n == 0) return new ArrayList<>();
+        // Initialize memoization table with constraints (1 <= n <= 8)
+        memo = new ArrayList[n + 2][n + 2];
+        return buildTrees(1, n);
+    }
+
+    private List<TreeNode> buildTrees(int start, int end) {
+        List<TreeNode> allTrees = new ArrayList<>();
+        
+        // Base Case: If start > end, it means the subtree is empty (null node)
+        if (start > end) {
+            allTrees.add(null);
+            return allTrees;
+        }
+
+        // Return cached result if it has already been computed
+        if (memo[start][end] != null) {
+            return memo[start][end];
+        }
+
+        // Iterate through all possible values to pick them as the root node
+        for (int i = start; i <= end; i++) {
+            // Generate all possible left subtrees with values smaller than i
+            List<TreeNode> leftTrees = buildTrees(start, i - 1);
+            
+            // Generate all possible right subtrees with values greater than i
+            List<TreeNode> rightTrees = buildTrees(i + 1, end);
+
+            // Combine each left and right subtree with the current root i
+            for (TreeNode left : leftTrees) {
+                for (TreeNode right : rightTrees) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = left;
+                    root.right = right;
+                    allTrees.add(root);
+                }
+            }
+        }
+
+        // Cache the computed result for this range before returning
+        memo[start][end] = allTrees;
+        return allTrees;
+    }
+}
