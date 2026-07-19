@@ -1,0 +1,20 @@
+class Solution {
+    public int numTrees(int n) {
+        // dp[i] stores the number of unique BSTs possible with i nodes
+        int[] dp = new int[n + 1];
+        
+        // Base cases: 1 way to make an empty tree, 1 way for a 1-node tree
+        dp[0] = 1;
+        dp[1] = 1;
+        
+        // Fill the DP table iteratively
+        for (int i = 2; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                // j nodes on the left, (i - j - 1) nodes on the right
+                dp[i] += dp[j] * dp[i - j - 1];
+            }
+        }
+        
+        return dp[n];
+    }
+}
