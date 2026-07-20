@@ -1,0 +1,41 @@
+// Definition for singly-linked list.
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) {
+        val = x;
+        next = null;
+    }
+}
+
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // Step 1: Detect if a cycle exists
+        while (fast != null && fast.next != null) {
+            slow = slow.next;          // Moves 1 step
+            fast = fast.next.next;     // Moves 2 steps
+
+            // Pointers collided, cycle confirmed
+            if (slow == fast) {
+                // Step 2: Find the entry point of the cycle
+                ListNode pointer1 = head;
+                ListNode pointer2 = slow;
+
+                while (pointer1 != pointer2) {
+                    pointer1 = pointer1.next;
+                    pointer2 = pointer2.next;
+                }
+                return pointer1; // Both meet at the cycle entrance
+            }
+        }
+
+        return null; // No cycle found
+    }
+}
