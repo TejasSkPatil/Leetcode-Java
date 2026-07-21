@@ -1,0 +1,88 @@
+import java.util.*;
+
+class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        Set<String> dict = new HashSet<>(wordList);
+        List<List<String>> res = new ArrayList<>();
+        
+        if (!dict.contains(endWord)) return res;
+
+        // Step 1: BFS to find the shortest distance to each word
+        Map<String, Integer> distance = new HashMap<>();
+        Map<String, List<String>> adjList = new HashMap<>();
+        bfs(beginWord, endWord, dict, distance, adjList);
+
+        // Step 2: DFS to collect all paths based on distances
+        List<String> path = new ArrayList<>();
+        path.add(beginWord);
+        dfs(beginWord, endWord, adjList, distance, path, res);
+
+        return res;
+    }
+
+    private void bfs(String begin, String end, Set<String> dict, Map<String, Integer> distance, Map<String, List<String>> adjList) {
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(begin);
+        distance.put(begin, 0);
+        
+        for (String word : dict) {
+            adjList.put(word, new ArrayList<>());
+        }
+        adjList.put(begin, new ArrayList<>());
+
+        boolean foundEnd = false;
+        
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            Set<String> visitedThisLevel = new HashSet<>();
+            
+            for (int i = 0; i < size; i++) {
+                String curr = queue.poll();
+                int currDist = distance.get(curr);
+                
+                char[] chars = curr.toCharArray();
+                for (int j = 0; j < chars.length; j++) {
+                    char originalChar = chars[j];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        if (c == originalChar) continue;
+                        chars[j] = c;
+                        String neighbor = new String(chars);
+                        
+                        if (neighbor.equals(end)) foundEnd = true;
+                        
+                        if (dict.contains(neighbor)) {
+                            if (!distance.containsKey(neighbor)) {
+                                distance.put(neighbor, currDist + 1);
+                                if (visitedThisLevel.add(neighbor)) {
+                                    queue.offer(neighbor);
+                                }
+                            }
+                            if (distance.get(neighbor) == currDist + 1) {
+                                adjList.get(curr).add(neighbor);
+                            }
+                        }
+                    }
+                    chars[j] = originalChar; // backtrack
+                }
+            }
+            if (foundEnd) break;
+        }
+    }
+
+    private void dfs(String curr, String end, Map<String, List<String>> adjList, Map<String, Integer> distance, List<String> path, List<List<String>> res) {
+        if (curr.equals(end)) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        
+        if (!adjList.containsKey(curr)) return;
+
+        for (String neighbor : adjList.get(curr)) {
+            if (distance.containsKey(neighbor) && distance.get(neighbor) == distance.get(curr) + 1) {
+                path.add(neighbor);
+                dfs(neighbor, end, adjList, distance, path, res);
+                path.remove(path.size() - 1); // backtrack
+            }
+        }
+    }
+}
