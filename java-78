@@ -1,0 +1,39 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+class Solution {
+    public List<Map<String, Object>> getHighestPaidEmployees(
+            List<Map<String, Object>> employees, 
+            List<Map<String, Object>> departments) {
+        
+        // 1. Map Department ID to Department Name
+        Map<Integer, String> deptMap = new HashMap<>();
+        for (Map<String, Object> dept : departments) {
+            deptMap.put((Integer) dept.get("id"), (String) dept.get("name"));
+        }
+
+        // 2. Find the highest salary for each departmentId
+        Map<Integer, Integer> maxSalaryByDept = new HashMap<>();
+        for (Map<String, Object> emp : employees) {
+            int deptId = (Integer) emp.get("departmentId");
+            int salary = (Integer) emp.get("salary");
+            maxSalaryByDept.put(deptId, Math.max(maxSalaryByDept.getOrDefault(deptId, 0), salary));
+        }
+
+        // 3. Filter employees who earn the max salary in their department
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map<String, Object> emp : employees) {
+            int deptId = (Integer) emp.get("departmentId");
+            int salary = (Integer) emp.get("salary");
+
+            if (salary == maxSalaryByDept.getOrDefault(deptId, -1)) {
+                Map<String, Object> topEmployee = new HashMap<>();
+                topEmployee.put("Department", deptMap.get(deptId));
+                topEmployee.put("Employee", emp.get("name"));
+                topEmployee.put("Salary", salary);
+                result.add(topEmployee);
+            }
+        }
+        return result;
+    }
+}
