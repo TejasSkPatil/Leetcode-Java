@@ -1,0 +1,31 @@
+import java.util.List;
+
+public class Solution {
+    public Integer getSecondHighestSalary(List<Employee> employees) {
+        if (employees == null || employees.size() < 2) {
+            return null;
+        }
+
+        Integer highest = null;
+        Integer secondHighest = null;
+
+        for (Employee emp : employees) {
+            if (emp.salary == null) continue;
+
+            // Initialize highest if not set
+            if (highest == null) {
+                highest = emp.salary;
+            } else if (emp.salary > highest) {
+                secondHighest = highest;
+                highest = emp.salary;
+            } else if (emp.salary < highest) {
+                // Check if it's the new second highest
+                if (secondHighest == null || emp.salary > secondHighest) {
+                    secondHighest = emp.salary;
+                }
+            }
+        }
+
+        return secondHighest;
+    }
+}
