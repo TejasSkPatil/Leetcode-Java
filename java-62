@@ -1,0 +1,35 @@
+class Solution {
+    public List<List<Integer>> queensAttacktheKing(int[][] queens, int[] king) {
+        List<List<Integer>> result = new ArrayList<>();
+        boolean[][] seen = new boolean[8][8];
+        
+        // Mark all queen positions on the board
+        for (int[] q : queens) {
+            seen[q[0]][q[1]] = true;
+        }
+        
+        // 8 possible directions: horizontal, vertical, and diagonal
+        int[] dirs = {-1, 0, 1};
+        
+        for (int dx : dirs) {
+            for (int dy : dirs) {
+                if (dx == 0 && dy == 0) continue;
+                
+                int x = king[0] + dx;
+                int y = king[1] + dy;
+                
+                // Move step by step in the current direction
+                while (x >= 0 && x < 8 && y >= 0 && y < 8) {
+                    if (seen[x][y]) {
+                        result.add(Arrays.asList(x, y));
+                        break; // Stop after finding the closest queen in this direction
+                    }
+                    x += dx;
+                    y += dy;
+                }
+            }
+        }
+        
+        return result;
+    }
+}
