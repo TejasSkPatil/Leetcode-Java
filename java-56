@@ -1,0 +1,26 @@
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        Set<String> seen = new HashSet<>();
+        Set<String> repeated = new HashSet<>();
+        
+        // Loop through the string to extract every possible 10-letter substring
+        for (int i = 0; i <= s.length() - 10; i++) {
+            String substring = s.substring(i, i + 10);
+            
+            // If the substring has been seen before, add it to the repeated set
+            if (seen.contains(substring)) {
+                repeated.add(substring);
+            } else {
+                seen.add(substring);
+            }
+        }
+        
+        // Convert the set of repeated sequences into the required list format
+        return new ArrayList<>(repeated);
+    }
+}
