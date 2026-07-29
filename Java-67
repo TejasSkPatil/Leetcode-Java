@@ -1,0 +1,29 @@
+class Solution {
+    public int maxChunksToSorted(int[] arr) {
+        int n = arr.length;
+        
+        // minFromRight[i] will store the minimum element from index i to n-1
+        int[] minFromRight = new int[n];
+        minFromRight[n - 1] = arr[n - 1];
+        
+        for (int i = n - 2; i >= 0; i--) {
+            minFromRight[i] = Math.min(minFromRight[i + 1], arr[i]);
+        }
+        
+        int chunks = 0;
+        int maxFromLeft = Integer.MIN_VALUE;
+        
+        // Iterate through the array and find splitting points
+        for (int i = 0; i < n - 1; i++) {
+            maxFromLeft = Math.max(maxFromLeft, arr[i]);
+            
+            // If max in left partition <= min in right partition, we can form a chunk
+            if (maxFromLeft <= minFromRight[i + 1]) {
+                chunks++;
+            }
+        }
+        
+        // The remaining portion of the array always forms the final chunk
+        return chunks + 1;
+    }
+}
