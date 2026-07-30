@@ -1,0 +1,17 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> result = new ArrayList<>();
+        // Total numbers in an n-bit Gray code sequence is 2^n
+        int totalCodes = 1 << n; 
+        
+        for (int i = 0; i < totalCodes; i++) {
+            // Formula to convert binary index to Gray code
+            result.add(i ^ (i >> 1)); 
+        }
+        
+        return result;
+    }
+}
