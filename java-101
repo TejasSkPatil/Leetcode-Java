@@ -1,0 +1,20 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> result = new ArrayList<>();
+        result.add(0); // Sequence always starts with 0
+        
+        for (int i = 0; i < n; i++) {
+            int currentLength = result.size();
+            // Iterate backwards through the existing sequence
+            for (int j = currentLength - 1; j >= 0; j--) {
+                // Add a leading '1' bit at position 'i' to the mirrored value
+                result.add(result.get(j) | (1 << i));
+            }
+        }
+        
+        return result;
+    }
+}
