@@ -1,0 +1,83 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class LRUCache {
+    // Structural Node for the Doubly Linked List
+    private class Node {
+        int key;
+        int value;
+        Node prev;
+        Node next;
+        
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private final int capacity;
+    private final Map<Integer, Node> map;
+    private final Node head;
+    private final Node tail;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.map = new HashMap<>();
+        
+        // Initialize dummy head and tail nodes to avoid edge cases with null pointers
+        this.head = new Node(0, 0);
+        this.tail = new Node(0, 0);
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    public int get(int key) {
+        if (!map.containsKey(key)) {
+            return -1;
+        }
+        Node node = map.get(key);
+        moveToHead(node); // Move the accessed node to the most recent position
+        return node.value;
+    }
+    
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
+            node.value = value; // Update the value
+            moveToHead(node);   // Mark as most recently used
+        } else {
+            Node newNode = new Node(key, value);
+            map.put(key, newNode);
+            addNode(newNode); // Add to the front of the doubly linked list
+            
+            // If capacity is exceeded, evict the least recently used node
+            if (map.size() > capacity) {
+                Node lruNode = tail.prev; // The node right before the dummy tail is the oldest
+                removeNode(lruNode);
+                map.remove(lruNode.key); // Remove from the map lookup
+            }
+        }
+    }
+
+    // Helper: Always add a new node right after the dummy head
+    private void addNode(Node node) {
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+
+    // Helper: Unlink an existing node from the list
+    private void removeNode(Node node) {
+        Node prevNode = node.prev;
+        Node nextNode = node.next;
+        prevNode.next = nextNode;
+        nextNode.prev = prevNode;
+    }
+
+    // Helper: Refresh a node's position by breaking its current links and moving it to the top
+    private void moveToHead(Node node) {
+        removeNode(node);
+        addNode(node);
+    }
+}
