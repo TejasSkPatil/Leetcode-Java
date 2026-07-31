@@ -1,0 +1,56 @@
+import java.util.HashMap;
+import java.util.Map;
+
+// Definition for a binary tree node provided by LeetCode.
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode() {}
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class Solution {
+    // Global variable to keep track of the current root index from the end of the postorder array
+    private int postIndex;
+    private Map<Integer, Integer> inorderMap;
+
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        // Start from the last element of the postorder array, which is the absolute root
+        this.postIndex = postorder.length - 1;
+        this.inorderMap = new HashMap<>();
+        
+        // Cache all inorder values and indices into a HashMap for O(1) lookups
+        for (int i = 0; i < inorder.length; i++) {
+            inorderMap.put(inorder[i], i);
+        }
+        
+        return buildTreeHelper(postorder, 0, inorder.length - 1);
+    }
+
+    private TreeNode buildTreeHelper(int[] postorder, int inStart, int inEnd) {
+        // Base case: if there are no elements to construct the subtree
+        if (inStart > inEnd) {
+            return null;
+        }
+
+        // Pick the current root value using postIndex and decrement the index
+        int rootVal = postorder[postIndex];
+        TreeNode root = new TreeNode(rootVal);
+        postIndex--;
+
+        // Find the index of this root in the inorder array
+        int inorderRootIndex = inorderMap.get(rootVal);
+
+        // Crucial: Build the right subtree first because postorder visits the right child right before the root
+        root.right = buildTreeHelper(postorder, inorderRootIndex + 1, inEnd);
+        root.left = buildTreeHelper(postorder, inStart, inorderRootIndex - 1);
+
+        return root;
+    }
+}
