@@ -1,0 +1,59 @@
+import java.util.*;
+
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        // Step 1: Build the adjacency list graph representation
+        // Map: Source Node -> List of Pairs [Neighbor Node, Travel Time]
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        for (int[] edge : times) {
+            graph.computeIfAbsent(edge[0], x -> new ArrayList<>()).add(new int[]{edge[1], edge[2]});
+        }
+
+        // Step 2: Initialize the distance array with "Infinity"
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[k] = 0; // Distance to the starting source node is 0
+
+        // Step 3: Set up Min-Heap Priority Queue sorted by travel time
+        // Array format: [current_node, current_accumulated_time]
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
+        pq.add(new int[]{k, 0});
+
+        // Step 4: Process nodes using Dijkstra's greedy approach
+        while (!pq.isEmpty()) {
+            int[] current = pq.poll();
+            int u = current[0];
+            int currDist = current[1];
+
+            // Optimization: Skip processing if we already found a shorter path to 'u'
+            if (currDist > dist[u]) {
+                continue;
+            }
+
+            // Traverse all neighbor connections of the current node
+            if (graph.containsKey(u)) {
+                for (int[] neighbor : graph.get(u)) {
+                    int v = neighbor[0];
+                    int weight = neighbor[1];
+
+                    // Relaxation step: Check if passing through 'u' yields a shorter path to 'v'
+                    if (dist[u] + weight < dist[v]) {
+                        dist[v] = dist[u] + weight;
+                        pq.add(new int[]{v, dist[v]});
+                    }
+                }
+            }
+        }
+
+        // Step 5: Find the maximum time required to reach any node
+        int maxDelay = 0;
+        for (int i = 1; i <= n; i++) {
+            if (dist[i] == Integer.MAX_VALUE) {
+                return -1; // Node 'i' was completely unreachable
+            }
+            maxDelay = Math.max(maxDelay, dist[i]);
+        }
+
+        return maxDelay;
+    }
+}
