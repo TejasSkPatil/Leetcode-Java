@@ -1,0 +1,64 @@
+import java.util.Arrays;
+
+public class TSP {
+    
+    // Returns the minimum cost to visit all cities and return to city 0
+    public static int findMinCost(int[][] graph) {
+        int n = graph.length;
+        
+        // 2^n possible states for the visited cities mask
+        int numStates = 1 << n; 
+        
+        // dp[mask][u] stores the min cost to visit remaining cities starting at node 'u'
+        // 'mask' represents the set of cities visited so far as bits
+        int[][] dp = new int[numStates][n];
+        
+        // Initialize the memoization table with -1 (uncomputed states)
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
+        }
+        
+        // Start at city 0, with only city 0 visited (mask = 1, which is binary 000...0001)
+        return tspHelper(1, 0, graph, dp, n);
+    }
+    
+    private static int tspHelper(int mask, int u, int[][] graph, int[][] dp, int n) {
+        // Base Case: If all cities have been visited (mask contains all 1s)
+        if (mask == (1 << n) - 1) {
+            return graph[u][0]; // Return cost from current city back to starting city 0
+        }
+        
+        // If this state has already been calculated, return it
+        if (dp[mask][u] != -1) {
+            return dp[mask][u];
+        }
+        
+        int minCost = Integer.MAX_VALUE;
+        
+        // Try to visit every other unvisited city 'v' next
+        for (int v = 0; v < n; v++) {
+            // Check if city 'v' has NOT been visited yet using bitwise AND
+            if ((mask & (1 << v)) == 0) {
+                // Calculate cost: edge weight to 'v' + recursive cost from 'v' with updated mask
+                int currentCost = graph[u][v] + tspHelper(mask | (1 << v), v, graph, dp, n);
+                minCost = Math.min(minCost, currentCost);
+            }
+        }
+        
+        // Memoize and return the result
+        return dp[mask][u] = minCost;
+    }
+
+    public static void main(String[] args) {
+        // Example distance matrix (graph[i][j] = distance from city i to city j)
+        int[][] graph = {
+            {0, 10, 15, 20},
+            {10, 0, 35, 25},
+            {15, 35, 0, 30},
+            {20, 25, 30, 0}
+        };
+        
+        int minCost = findMinCost(graph);
+        System.out.println("The minimum TSP path cost is: " + minCost);
+    }
+}
