@@ -1,0 +1,24 @@
+class Solution {
+    public Node connect(Node root) {
+        if (root == null) return null;
+        
+        Node leftMost = root;
+        
+        while (leftMost.left != null) {
+            Node head = leftMost;
+            while (head != null) {
+                // Connection 1: Connect left child to right child
+                head.left.next = head.right;
+                
+                // Connection 2: Connect right child to the adjacent left child
+                if (head.next != null) {
+                    head.right.next = head.next.left;
+                }
+                
+                head = head.next;
+            }
+            leftMost = leftMost.left;
+        }
+        return root;
+    }
+}
